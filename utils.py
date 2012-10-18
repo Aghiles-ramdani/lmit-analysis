@@ -11,14 +11,15 @@ def prox(n_maquinas, maquina, permut):
         pos = 0
     else:
         pos = sum(n_maquinas[0:maquina])
-        
+    
     for n in xrange(pos, pos+n_maquinas[maquina]):
         
-        if n == pos+n_maquinas[maquina]:
+        if n == pos+n_maquinas[maquina]-1:
             
             if permut[n] == 1:
                 
                 if maquina == scipy.shape(n_maquinas)[0]-1:
+                    
                     permut[n] = 0
                     a = 1
                     return permut, a
