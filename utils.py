@@ -53,7 +53,7 @@ def proxm(n_maquinas, permut, slot, nslots):
     a = 0
     
     if b == 1:
-        if slot == nslots-1:
+        if slot == nslots:
             a = 1
             return permut,a
         
