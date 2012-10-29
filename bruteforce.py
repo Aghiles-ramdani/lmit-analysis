@@ -16,6 +16,9 @@ pesos = mat_file["pesos"]
 l = scipy.shape(pesos)[1]
 t = scipy.shape(x_teste)[0]
 optimo = scipy.zeros([t,l,5])
+[comb, list] = utils.calc_comb()
+
+lista = list.next()
 
 # Minimizacao
 for n in range(0,1):
@@ -28,12 +31,21 @@ for n in range(0,1):
     if x_teste[n] == 0:
         continue
     
-    while(True):
-        if x_teste[n]-numpy.dot(pesos,permut) != 0:
-            [permut,a]=utils.prox(n_maquinas[0],0,permut)
+    for c in comb:
+        if x_teste[n]-numpy.sum(c) != 0:
             continue
         
-        custo = 1/(2*s2)*(x_teste[n] - numpy.dot(pesos, permut))**2 - numpy.dot(permut,numpy.log(probab[n,:])) - numpy.dot((1-permut,),numpy.log(1-probab[n,:]))
+        custo = 1/(2*s2)*(x_teste[n] - sum(c))**2 
+        
+        
+        for m in range(numpy.shape(n_maquinas)[1]):
+            permut = numpy.zeros(numpy.shape(pesos)[1])
+            if lista[m] != 0:
+                permut[sum(n_maquinas[0][0:m]) + lista[m]] = 1
+                
+        custo = custo - numpy.dot(permut,numpy.log(probab[n,:])) - numpy.dot((1-permut,),numpy.log(1-probab[n,:]))
+        
+        lista = list.next()
         
         for i in xrange(5):
             if custo < best[i]:
@@ -50,8 +62,4 @@ for n in range(0,1):
                 optimo[n,:,i] = permut
                 break
         
-        [permut, a] = utils.prox(n_maquinas[0], 0, permut)
-        
-        if a == 1:
-            break
     
