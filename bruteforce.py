@@ -3,26 +3,39 @@ import scipy
 import numpy
 
 # Inicializacao e importacao de dados
+print "initializing and loading data"
+
 
 mat_file = utils.read_mat("final.mat")
+
+combinacoes = utils.read_mat("combinacoes.mat")
+
 s2 = mat_file["s2"]
+print "variance %s" % s2
+
 probab = mat_file["probab"]
-Teste = mat_file["Teste"]
-maquinas = mat_file["maquinas"]
+print "probabilidade: %s" % probab
+
 x_teste = mat_file["x_teste"]
+print "consumo total: %s" % x_teste
 n_maquinas = mat_file["n_maquinas"]
+print "submaquinas per maquina: %s " % n_maquinas
 pesos = mat_file["pesos"]
+print "pesos per maquina: %s " % pesos
 
 l = scipy.shape(pesos)[1]
+print "l: %s " % l
 t = scipy.shape(x_teste)[0]
+print "t: %s " % t
 optimo = scipy.zeros([t,l,5])
-[comb, list] = utils.calc_comb()
+print "optimo: %s " % optimo
+[comb, list] = utils.calc_comb(combinacoes, n_maquinas)
 
 lista = list.next()
 
 # Minimizacao
 for n in range(0,1):
-    
+    print "in problem %s" % n
     a = 0
     b = 0
     permut = scipy.zeros(l)

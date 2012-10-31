@@ -6,11 +6,10 @@ def read_mat(filename):
     mat_file = scipy.io.loadmat(filename)
     return mat_file
 
-def calc_comb():
-    mat = read_mat("combinacoes.mat")
-    n_maquinas = read_mat("final.mat")["n_maquinas"]
+def calc_comb(mat, n_maquinas):
     
     m1 = mat["m1"].tolist()[0]
+    print "m1 %s " % m1
     m2 = mat["m2"].tolist()[0]
     m3 = mat["m3"].tolist()[0]
     m4 = mat["m4"].tolist()[0]
@@ -20,16 +19,17 @@ def calc_comb():
     m8 = mat["m8"].tolist()[0]
     m9 = mat["m9"].tolist()[0]
     m10 = mat["m10"].tolist()[0]
-    l1 = range(n_maquinas[0][0])
-    l2 = range(n_maquinas[0][1])
-    l3 = range(n_maquinas[0][2])
-    l4 = range(n_maquinas[0][3])
-    l5 = range(n_maquinas[0][4])
-    l6 = range(n_maquinas[0][5])
-    l7 = range(n_maquinas[0][6])
-    l8 = range(n_maquinas[0][7])
-    l9 = range(n_maquinas[0][8])
-    l10 = range(n_maquinas[0][9])
+    l1 = range(n_maquinas[0][0] + 1)
+    print "l1 %s" % l1
+    l2 = range(n_maquinas[0][1] + 1)
+    l3 = range(n_maquinas[0][2] + 1)
+    l4 = range(n_maquinas[0][3] + 1)
+    l5 = range(n_maquinas[0][4] + 1)
+    l6 = range(n_maquinas[0][5] + 1)
+    l7 = range(n_maquinas[0][6] + 1)
+    l8 = range(n_maquinas[0][7] + 1)
+    l9 = range(n_maquinas[0][8] + 1)
+    l10 = range(n_maquinas[0][9] + 1)
     
     comb = itertools.product(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10)
     
