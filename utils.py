@@ -2,40 +2,29 @@ import scipy.io
 import numpy
 import itertools
 
+def uns(lista):
+    for n in range(numpy.shape(lista)[0]):
+        if lista[n] > 0:
+            lista[n] == 1
+    
+    return(lista)
+
 def read_mat(filename):
     mat_file = scipy.io.loadmat(filename)
     return mat_file
 
-def calc_comb(mat, n_maquinas):
+def calc_comb(pesos):
+    list = []
     
-    m1 = mat["m1"].tolist()[0]
-    print "m1 %s " % m1
-    m2 = mat["m2"].tolist()[0]
-    m3 = mat["m3"].tolist()[0]
-    m4 = mat["m4"].tolist()[0]
-    m5 = mat["m5"].tolist()[0]
-    m6 = mat["m6"].tolist()[0]
-    m7 = mat["m7"].tolist()[0]
-    m8 = mat["m8"].tolist()[0]
-    m9 = mat["m9"].tolist()[0]
-    m10 = mat["m10"].tolist()[0]
-    l1 = range(n_maquinas[0][0] + 1)
-    print "l1 %s" % l1
-    l2 = range(n_maquinas[0][1] + 1)
-    l3 = range(n_maquinas[0][2] + 1)
-    l4 = range(n_maquinas[0][3] + 1)
-    l5 = range(n_maquinas[0][4] + 1)
-    l6 = range(n_maquinas[0][5] + 1)
-    l7 = range(n_maquinas[0][6] + 1)
-    l8 = range(n_maquinas[0][7] + 1)
-    l9 = range(n_maquinas[0][8] + 1)
-    l10 = range(n_maquinas[0][9] + 1)
+    for n in range(numpy.shape(pesos)[0]):
+        if n == 0:
+            list = [[0,pesos[0]]]
+        else:
+            list = list + [[0,pesos[n]]]
     
-    comb = itertools.product(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10)
+    lista = itertools.product(*list)
     
-    lista = itertools.product(l1,l2,l3,l4,l5,l6,l7,l8,l9,l10)
-    
-    return comb, lista
+    return lista
     
 
 def prox(n_maquinas, maquina, permut):
