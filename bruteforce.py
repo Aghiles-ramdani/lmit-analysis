@@ -1,6 +1,7 @@
 import utils
 import scipy
 import numpy
+import unfold
 
 # Inicializacao e importacao de dados
 print "initializing and loading data"
@@ -40,7 +41,8 @@ for n in range(0,1):
     if x_teste[n] == 0:
         continue
     
-    for c in list:
+    for idx, c in enumerate(list):
+        print "in index: %s" % idx
         if x_teste[n]-sum(c) != 0:
             continue
         
