@@ -31,7 +31,7 @@ t = scipy.shape(Consumo_total)[0]
 optimo = scipy.zeros([t,l,5])
 
 # Geracao da lista de permutacoes
-list = utils.calc_comb(pesos)
+lista = utils.calc_comb(pesos)
 
 # Minimizacao
 
@@ -48,7 +48,7 @@ for n in range(0,1):
         continue
     
     # Percorre todas as permutacoes
-    for c in list:
+    for c in lista:
         
         # Dada a baixa variancia so interessam combinacoes cujo consumo seja igual ao consumo total
         
