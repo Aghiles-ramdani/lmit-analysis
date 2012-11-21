@@ -5,57 +5,72 @@ import numpy
 # Inicializacao e importacao de dados
 print "initializing and loading data"
 
-
 mat_file = utils.read_mat("final.mat")
 
+# Variancia
 s2 = mat_file["s2"]
-print "variance %s" % s2
 
-probab = mat_file["probab"]
-print "probabilidade: %s" % probab
+# Matriz de probabilidades
+matriz_probabilidades = mat_file["probab"]
 
-x_teste = mat_file["x_teste"]
-print "consumo total: %s" % x_teste
+# Consumo total
+Consumo_total = mat_file["x_teste"]
+
+# Vector com o numero de submaquinas de cada maquina
 n_maquinas = mat_file["n_maquinas"]
-print "submaquinas per maquina: %s " % n_maquinas
+
+# Vector com o consumo de cada submaquina
 pesos = mat_file["pesos"].tolist()[0]
-print "pesos per maquina: %s " % pesos
+
+# Variaveis auxiliares
 
 l = scipy.shape(pesos)[0]
-print "l: %s " % l
-t = scipy.shape(x_teste)[0]
-print "t: %s " % t
+t = scipy.shape(Consumo_total)[0]
+
+# Matriz de armazenamento dos resultados de cada problema 
 optimo = scipy.zeros([t,l,5])
-print "optimo: %s " % optimo
+
+# Geracao da lista de permutacoes
 list = utils.calc_comb(pesos)
 
 # Minimizacao
+
 for n in range(0,1):
+    
     print "in problem %s" % n
     a = 0
     b = 0
-    permut = scipy.zeros(l)
+    combinacoes = scipy.zeros(l)
     best =[float('Inf')]*5
     
-    if x_teste[n] == 0:
+    # Caso o consumo total seja zero nao e necessario optimizar
+    if Consumo_total[n] == 0:
         continue
     
+    # Percorre todas as permutacoes
     for c in list:
-        if x_teste[n]-sum(c) != 0:
-            continue
         
-        custo = 1/(2*s2)*(x_teste[n] - sum(c))**2 
+        # Dada a baixa variancia so interessam combinacoes cujo consumo seja igual ao consumo total
         
+        if s2 < 0.000001:
+            if Consumo_total-sum(c) != 0:
+                continue
         
-        permut = numpy.array(utils.uns(c))
-                
-        custo = custo - numpy.dot(permut,numpy.log(probab[n,:])) - numpy.dot((1-permut,),numpy.log(1-probab[n,:]))
+        # Calculo da primeira parte do funcional de custo
+        custo = 1/(2*s2)*(Consumo_total[n] - sum(c))**2 
         
+        # Calculo do vector de combinacoes
+        combinacoes = numpy.array(utils.uns(c))
+        
+        # Calculo da segunda parte do funcional de custo
+        custo = custo - numpy.dot(combinacoes,numpy.log(matriz_probabilidades[n,:])) - numpy.dot((1-combinacoes,),numpy.log(1-matriz_probabilidades[n,:]))
+        
+        # Armazenamento de resultados
         for i in xrange(5):
             if custo < best[i]:
                 if i == 5:
                     best[i] = custo
-                    optimo[n,:,i] = permut
+                    optimo[n,:,i] = combinacoes
                     break
                 
                 for m in range(0,4-i):
@@ -63,7 +78,7 @@ for n in range(0,1):
                     optimo[n,:,i]
                 
                 best[i] = custo
-                optimo[n,:,i] = permut
+                optimo[n,:,i] = combinacoes
                 break
         
     
