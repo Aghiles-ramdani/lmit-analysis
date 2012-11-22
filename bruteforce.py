@@ -53,7 +53,7 @@ for n in range(0,1):
         # Dada a baixa variancia so interessam combinacoes cujo consumo seja igual ao consumo total
         
         if s2 < 0.000001:
-            if Consumo_total-sum(c) != 0:
+            if Consumo_total[n]-sum(c) != 0:
                 continue
         
         # Calculo da primeira parte do funcional de custo
