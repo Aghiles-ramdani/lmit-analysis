@@ -42,7 +42,8 @@ for n in range(0,1):
         continue
     
     for idx, c in enumerate(list):
-        print "in index: %s" % idx
+        if idx % 100000 == 0: 
+            print "in index: %s" % idx
         if x_teste[n]-sum(c) != 0:
             continue
         
