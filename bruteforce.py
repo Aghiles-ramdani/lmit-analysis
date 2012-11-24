@@ -17,7 +17,7 @@ matriz_probabilidades = mat_file["probab"]
 Consumo_total = mat_file["x_teste"]
 
 # Vector com o numero de submaquinas de cada maquina
-n_maquinas = mat_file["n_maquinas"]
+n_maquinas = mat_file["n_maquinas"][0].tolist()
 
 # Vector com o consumo de cada submaquina
 pesos = mat_file["pesos"].tolist()[0]
@@ -31,16 +31,14 @@ t = scipy.shape(Consumo_total)[0]
 optimo = scipy.zeros([t,l,5])
 
 # Geracao da lista de permutacoes
-lista = utils.calc_comb(pesos)
+[lista,comb] = utils.calc_comb(n_maquinas, pesos)
 
 # Minimizacao
 
 for n in range(0,1):
     
     print "in problem %s" % n
-    a = 0
-    b = 0
-    combinacoes = scipy.zeros(l)
+    a = 0;
     best =[float('Inf')]*5
     
     # Caso o consumo total seja zero nao e necessario optimizar
@@ -48,19 +46,24 @@ for n in range(0,1):
         continue
     
     # Percorre todas as permutacoes
-    for c in lista:
+    for c in comb:
+        if(a%100000 == 0):
+            print "in iteration %s" %a
+        
+        a += 1
+        
+        # Calculo do vector de combinacoes e dos consumos
+        [combinacoes, consumos] = utils.uns(lista, c, n_maquinas)
+        combinacoes = numpy.array(combinacoes)
         
         # Dada a baixa variancia so interessam combinacoes cujo consumo seja igual ao consumo total
         
         if s2 < 0.000001:
-            if Consumo_total[n]-sum(c) != 0:
+            if Consumo_total[n]-sum(consumos) != 0:#mudar
                 continue
         
         # Calculo da primeira parte do funcional de custo
-        custo = 1/(2*s2)*(Consumo_total[n] - sum(c))**2 
-        
-        # Calculo do vector de combinacoes
-        combinacoes = numpy.array(utils.uns(c))
+        custo = 1/(2*s2)*(Consumo_total[n] - sum(consumos))**2 
         
         # Calculo da segunda parte do funcional de custo
         custo = custo - numpy.dot(combinacoes,numpy.log(matriz_probabilidades[n,:])) - numpy.dot((1-combinacoes,),numpy.log(1-matriz_probabilidades[n,:]))

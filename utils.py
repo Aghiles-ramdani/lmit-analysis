@@ -2,12 +2,19 @@ import scipy.io
 import numpy
 import itertools
 
-def uns(lista):
-    for n in range(numpy.shape(lista)[0]):
-        if lista[n] > 0:
-            lista[n] == 1
+def uns(lista, comb, maquinas):
     
-    return(lista)
+    tamanho = numpy.shape(comb)[0]
+    combinacoes = numpy.zeros(sum(maquinas))
+    consumos = numpy.zeros(tamanho)
+    pos = 0
+    
+    for n in range(tamanho):
+        consumos[n] = lista[n][comb[n]]
+        combinacoes[pos] = 1
+        pos = sum(maquinas[0:n+1])
+    
+    return (combinacoes, consumos)
 
 def read_mat(filename):
     mat_file = scipy.io.loadmat(filename)
@@ -47,18 +54,22 @@ def calc_comb_markov(n_maquinas, combinacoes):
     
     return lista, lista_maquinas
     
-def calc_comb(pesos):
-    list = []
+def calc_comb(n_maquinas, pesos):
+    comb = []
+    for n in range(numpy.shape(n_maquinas)[0]):
+        prov = range(n_maquinas[n])
+        comb.append(prov)
+        
     
-    for n in range(numpy.shape(pesos)[0]):
-        if n == 0:
-            list = [[0,pesos[0]]]
-        else:
-            list = list + [[0,pesos[n]]]
+    lista = itertools.product(*comb)
+    pos = 0
     
-    lista = itertools.product(*list)
+    for i in range(numpy.shape(n_maquinas)[0]):
+        for m in range(n_maquinas[i]):
+            comb[i][m] = pesos[pos]
+            pos += 1
     
-    return lista
+    return(comb, lista)
     
 
 def prox(n_maquinas, maquina, permut):
