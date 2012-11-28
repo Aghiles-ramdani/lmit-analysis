@@ -48,14 +48,15 @@ for n in range(0,1):
         continue
     
     # Percorre todas as permutacoes
-    for c in lista:
-        
+    for idx, c in enumerate(lista):
+        if idx % 100000 == 0:
+            print "iteration %s" % idx
         # Dada a baixa variancia so interessam combinacoes cujo consumo seja igual ao consumo total
         
         if s2 < 0.000001:
             if Consumo_total[n]-sum(c) != 0:
                 continue
-        
+        print idx
         # Calculo da primeira parte do funcional de custo
         custo = 1/(2*s2)*(Consumo_total[n] - sum(c))**2 
         
