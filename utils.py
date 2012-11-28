@@ -11,7 +11,10 @@ def uns(lista, comb, maquinas):
     
     for n in range(tamanho):
         consumos[n] = lista[n][comb[n]]
-        combinacoes[pos] = 1
+        if comb[n] == 0:
+            pos = sum(maquinas[0:n+1])
+            continue
+        combinacoes[pos+comb[n]-1] = 1
         pos = sum(maquinas[0:n+1])
     
     return (combinacoes, consumos)
@@ -24,7 +27,7 @@ def read_mat(filename):
 def calc_comb(n_maquinas, pesos):
     lista = []
     for n in range(numpy.shape(n_maquinas)[0]):
-        prov = range(n_maquinas[n])
+        prov = range(n_maquinas[n]+1)
         lista.append(prov)
         
     
@@ -32,7 +35,9 @@ def calc_comb(n_maquinas, pesos):
     pos = 0
     
     for i in range(numpy.shape(n_maquinas)[0]):
-        for m in range(n_maquinas[i]):
+        for m in range(n_maquinas[i]+1):
+            if lista[i][m] == 0:
+                continue
             lista[i][m] = pesos[pos]
             pos += 1
     

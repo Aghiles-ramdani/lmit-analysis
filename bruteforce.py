@@ -5,7 +5,9 @@ import numpy
 # Inicializacao e importacao de dados
 print "initializing and loading data"
 
-mat_file = utils.read_mat("final.mat")
+#mat_file = utils.read_mat("final.mat")
+mat_file = utils.read_mat("Final35.mat")
+
 
 # Variancia
 s2 = mat_file["s2"]
@@ -49,7 +51,7 @@ for n in range(0,1):
         
         
 
-    for idx, c in enumerate(lista):
+    for idx, c in enumerate(comb):
         if idx % 100000 == 0:
             print "iteration %s" % idx
         
@@ -62,7 +64,6 @@ for n in range(0,1):
         if s2 < 0.000001:
             if Consumo_total[n]-sum(consumos) != 0:#mudar
                 continue
-        print idx
         # Calculo da primeira parte do funcional de custo
         custo = 1/(2*s2)*(Consumo_total[n] - sum(consumos))**2 
         
